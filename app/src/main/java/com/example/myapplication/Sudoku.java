@@ -5,19 +5,14 @@ import java.util.Set;
 public class Sudoku {
     Tile[][] board;
     Set<Tile> remainingTiles;
+    IStrategySolve strategy;
     int grid[][]= new int[9][9];
-    public Sudoku(int[][] grid){
-        createTiles();
-        setAdjacency();
+    public Sudoku(int[][] grid,IStrategySolve strategy){
+        this.strategy=strategy;
+        this.grid=grid;
     }
-    public int solve(){
-        int totalChanged=0;
-        int changed=1;
-        while(changed<0){
-            changed=fillObviousTiles();
-            totalChanged+=changed;
-        }
-        return totalChanged;
+    public boolean solve(){
+        return strategy.solve(grid);
     }
     private void setAdjacency(){
         for(int i=0;i<board.length;i++){

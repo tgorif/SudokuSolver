@@ -33,6 +33,6 @@ public class ExampleUnitTest {
             testcase[8][3] = 5;
             testcase[8][5] = 9;
         }
-        Sudoku s = new Sudoku(testcase);
+
     }
 }

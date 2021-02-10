@@ -5,6 +5,21 @@ import org.junit.Test;
 
 public class SudokuUnitTest {
     @Test
+    public void testcase0(){
+        int[][] board = {
+                { 8, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 3, 6, 0, 0, 0, 0, 0 },
+                { 0, 7, 0, 0, 9, 0, 2, 0, 0 },
+                { 0, 5, 0, 0, 0, 7, 0, 0, 0 },
+                { 0, 0, 0, 0, 4, 5, 7, 0, 0 },
+                { 0, 0, 0, 1, 0, 0, 0, 3, 0 },
+                { 0, 0, 1, 0, 0, 0, 0, 6, 8 },
+                { 0, 0, 8, 5, 0, 0, 0, 1, 0 },
+                { 0, 9, 0, 0, 0, 0, 4, 0, 0 }
+        };
+        Sudoku s = new Sudoku(board,new BackTracking());
+        Assert.assertTrue(s.solve());
+    }
     public  void SudokuCreation(){
         int[][] testcase = new int[9][9];
         {
@@ -26,9 +41,9 @@ public class SudokuUnitTest {
             testcase[8][3] = 5;
             testcase[8][5] = 9;
         }
-        Sudoku s = new Sudoku(testcase);
-        int tmp=s.solve();
-        Assert.assertTrue(tmp>0);
+        Sudoku s = new Sudoku(testcase,new BackTracking());
+        boolean tmp=s.solve();
+        Assert.assertTrue(tmp);
 
     }
 }
