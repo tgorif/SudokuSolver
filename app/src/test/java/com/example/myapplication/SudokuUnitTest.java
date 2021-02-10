@@ -3,10 +3,14 @@ package com.example.myapplication;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SudokuUnitTest {
-    @Test
-    public void testcase0(){
-        int[][] board = {
+    List<int[][]> testcases= new ArrayList<>();
+
+    private void setup(){
+        int[][] case1={
                 { 8, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 3, 6, 0, 0, 0, 0, 0 },
                 { 0, 7, 0, 0, 9, 0, 2, 0, 0 },
@@ -17,10 +21,6 @@ public class SudokuUnitTest {
                 { 0, 0, 8, 5, 0, 0, 0, 1, 0 },
                 { 0, 9, 0, 0, 0, 0, 4, 0, 0 }
         };
-        Sudoku s = new Sudoku(board,new BackTracking());
-        Assert.assertTrue(s.solve());
-    }
-    public  void SudokuCreation(){
         int[][] testcase = new int[9][9];
         {
             testcase[0][0] = 8;
@@ -41,9 +41,69 @@ public class SudokuUnitTest {
             testcase[8][3] = 5;
             testcase[8][5] = 9;
         }
-        Sudoku s = new Sudoku(testcase,new BackTracking());
-        boolean tmp=s.solve();
-        Assert.assertTrue(tmp);
+        int[][] case2={
+                { 0, 0, 0, 0, 0, 0, 5, 0, 0 },
+                { 0, 0, 0, 0, 4, 0, 2, 6, 0 },
+                { 3, 7, 0, 0, 1, 0, 0, 0, 0 },
+                { 6, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 2, 8, 9, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 2, 0, 1, 6, 3, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 9, 0, 0, 0, 7, 0, 0, 0 },
+                { 0, 6, 0, 5, 2, 0, 0, 7, 8 }
+        };
 
+        testcases.add(case1);
+        testcases.add(testcase);
+        testcases.add(case2);
+
+    }
+
+    @Test
+    public void testMostConstraint(){
+        setup();
+        for(int[][] c : testcases){
+            Sudoku s = new Sudoku(c,new BackTrackingMostConstraint());
+            Assert.assertTrue(s.solve());
+            s.printAnalytics();
+        }
+    }
+    @Test
+    public void testLeastConstraint(){
+        setup();
+        for(int[][] c : testcases){
+            Sudoku s = new Sudoku(c,new BacktrackingLeastConstraint());
+            Assert.assertTrue(s.solve());
+            s.printAnalytics();
+        }
+    }
+    @Test
+    public void testLeftRightTopBot(){
+        setup();
+        for(int[][] c : testcases){
+            Sudoku s = new Sudoku(c,new BackTrackingLeftRightTopBot());
+            Assert.assertTrue(s.solve());
+            s.printAnalytics();
+        }
+    }
+    @Test
+    public void testProximity(){
+        setup();
+        for(int[][] c : testcases){
+            Sudoku s = new Sudoku(c,new BackTrackingProximity());
+            Assert.assertTrue(s.solve());
+            s.printAnalytics();
+            s.printSolution();
+        }
+    }
+    @Test
+    public void testStartingClues(){
+        setup();
+        for(int[][] c : testcases){
+            Sudoku s = new Sudoku(c,new BackTrackingStaringClues());
+            Assert.assertTrue(s.solve());
+            s.printAnalytics();
+            s.printSolution();
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
 public interface IStrategySolve {
-    public boolean solve(int[][] grid);
+    boolean solve(int[][] grid);
+    void printAnalytics();
+    void printSolution();
 }

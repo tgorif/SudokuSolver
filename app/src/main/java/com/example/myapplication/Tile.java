@@ -5,6 +5,7 @@ import java.util.Set;
 public class Tile {
     int x;
     int y;
+    int staringClues=0;
     Integer value;
     Set<Integer> candidates;
     Set<Tile> adjacent;
@@ -23,7 +24,6 @@ public class Tile {
             return this;
         }
         public Tile build(){
-            setCandidates();
             if(!isValid()) return  null;
             return new Tile(this);
         }
@@ -31,20 +31,11 @@ public class Tile {
             if(x<0 || y<0|| x>8 || y>8 || value<0 || value>9) return false;
             return  true;
         }
-        private void setCandidates(){
-            candidates= new HashSet<>();
-            if(this.value==0) {
-                for (int i = 1; i < 10; i++) {
-                    candidates.add(i);
-                }
-            }
-        }
     }
     private Tile(TileBuilder tb){
         this.x=tb.x;
         this.y=tb.y;
         this.value=tb.value;
-        this.candidates=tb.candidates;
     }
     public Set<Integer> getCandidates(){
         return candidates;
@@ -52,16 +43,45 @@ public class Tile {
     public void setNeighbors(Set<Tile> set){
         adjacent=set;
     }
-    public boolean reduceCandidates(){
-        for(Tile t : adjacent){
-            if(t.value!=null){
-                candidates.remove(t.value);
+    public void setCandidates(){
+        candidates=new HashSet<>();
+        if(this.value>0 && this.value<10){
+            candidates.add(this.value);
+        }
+        else {
+            for (int i = 1; i < 10; i++) {
+                candidates.add(i);
+            }
+            for (Tile t : adjacent) {
+                if (t.value>0) {
+                    candidates.remove(t.value);
+                }
             }
         }
-        if(candidates.size()==1){
-            value=(Integer)candidates.toArray()[0];
-            return true;
+    }
+    public void setValue(int n){
+        value=n;
+        for (Tile t : adjacent){
+            t.updateCandidates(n);
         }
-        return false;
+    }
+    public void resetValue(){
+        value=0;
+        for (Tile t : adjacent){
+            t.revertUpdate();
+        }
+    }
+    private void updateCandidates(int n){
+        if(candidates.contains(n)){
+            candidates.remove(n);
+        }
+    }
+    private void revertUpdate(){
+        setCandidates();
+    }
+    public void setStartingClues(){
+        for (Tile t : adjacent){
+            if(t.value!=0) staringClues++;
+        }
     }
 }
