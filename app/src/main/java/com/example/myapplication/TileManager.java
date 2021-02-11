@@ -11,10 +11,8 @@ public class TileManager {
     List<Tile> tiles= new ArrayList<>();
     public TileManager(int[][] grid){
         this.grid=grid;
-        init();
-    }
-    private void init(){
         createTiles();
+        this.setAdjacency();
     }
     private void createTiles(){
         if(grid.length!=9 || grid[0].length!=9) return;
@@ -145,5 +143,15 @@ public class TileManager {
         for (Tile ot : added){
             setTileListByProximity(ot);
         }
+    }
+    public TileManager deepCopy(){
+        TileManager copy =new TileManager(grid);
+        for(Tile t : tiles){
+            copy.tiles.add(copy.board[t.x][t.y]);
+        }
+        if(tiles.size()>0 &&tiles.get(0).candidates!=null){
+            copy.setCandidates();
+        }
+        return copy;
     }
 }

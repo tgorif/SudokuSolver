@@ -54,8 +54,8 @@ public class SudokuUnitTest {
         };
 
         testcases.add(case1);
-        testcases.add(testcase);
-        testcases.add(case2);
+        //testcases.add(testcase);
+        //testcases.add(case2);
 
     }
 
@@ -103,7 +103,6 @@ public class SudokuUnitTest {
             Sudoku s = new Sudoku(c,new BackTrackingStaringClues());
             Assert.assertTrue(s.solve());
             s.printAnalytics();
-            s.printSolution();
         }
     }
 }

@@ -1,20 +1,29 @@
 package com.example.myapplication;
 
 public class Observer {
-    private int invalidAssignments=0;
-    private long start;
-    private long end;
-    public void deadEnd(){
-        invalidAssignments++;
+    private final TileManager manager;
+    private final Analytics analytics;
+    private final Memento memento;
+    public Observer(TileManager manager){
+        this.manager=manager;
+        this.memento=new Memento(this.manager.deepCopy());
+        analytics=new Analytics();
+    }
+    public void deadEnd(int x,int y){
+        analytics.invalidAssignment();
+        memento.revert();
+    }
+    public void assignment(int x,int y,int v){
+        memento.assign(x,y,v);
     }
     public void printResults(){
-        System.out.println("invalid Assignments: " + invalidAssignments);
-        System.out.println("Start: " + start + " End: " + end + " TotalTime: " + (end-start));
+        analytics.printResults();
+        memento.printChangesSize();
     }
     public void end() {
-        end=System.currentTimeMillis();
+        analytics.setEnd();
     }
     public void start() {
-        start=System.currentTimeMillis();
+        analytics.setStart();
     }
 }
